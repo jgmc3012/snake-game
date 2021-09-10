@@ -25,7 +25,8 @@ module View
         private
         def render_snake(state)
             extend Ruby2D::DSL
-            state.snake.body.each do |cell|
+            @snake_pos.each(&:remove) if @snake_pos
+            @snake_pos = state.snake.body.map do |cell|
                 Square.new(
                     x: @pixel_size * cell.x,
                     y: @pixel_size * cell.y,
@@ -38,7 +39,8 @@ module View
         private
         def render_food(state)
             extend Ruby2D::DSL
-            Square.new(
+            @food.remove if @food
+            @food = Square.new(
                 x: @pixel_size * state.food.x,
                 y: @pixel_size * state.food.y,
                 size: @pixel_size,
