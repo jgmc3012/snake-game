@@ -14,6 +14,13 @@ module Actions
             end_game(state)
         end
     end
+    
+    def self.change_direction(state, direction)
+        if next_direction_is_invalid?(direction, state)
+            return
+        end
+        state.direction = direction
+    end
 
     private
     def self.grow_snake(state, next_position)
@@ -28,13 +35,6 @@ module Actions
     private
     def self.generate_food(state)
         return Model::Coord.new(rand(0..(state.board.width - 1)), rand(0..(state.board.height - 1)))
-    end
-
-    def self.change_direction(state, direction)
-        if next_direction_is_invalid?(direction, state)
-            return
-        end
-        state.direction = direction
     end
 
     private

@@ -19,7 +19,7 @@ class App
             sleep 0.5
             Actions::move_snake(@state)
             if @state.game_over
-                puts "Game Over"
+                puts "Game Over. Score: #{@state.snake.body.length}"
                 exit
             end
         end
