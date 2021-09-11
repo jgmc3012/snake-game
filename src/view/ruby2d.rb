@@ -2,7 +2,8 @@ require 'ruby2d'
 
 module View
     class Ruby2dView
-        def initialize
+        def initialize(app)
+            @app = app
             @pixel_size = 20
         end
 
@@ -13,6 +14,9 @@ module View
                 height: @pixel_size * state.board.height,
                 background: 'black'
             )
+            on :key_down do |event|
+                handle_key_down(event)
+            end                
             show
         end
 
@@ -46,6 +50,20 @@ module View
                 size: @pixel_size,
                 color: 'red'
             )
+        end
+
+        private
+        def handle_key_down(event)
+            case event.key
+            when 'up'
+                @app.send_action(:change_direction, Model::Direction::UP)
+            when 'down'
+                @app.send_action(:change_direction, Model::Direction::DOWN)
+            when 'left'
+                @app.send_action(:change_direction, Model::Direction::LEFT)
+            when 'right'
+                @app.send_action(:change_direction, Model::Direction::RIGHT)
+            end
         end
 
     end

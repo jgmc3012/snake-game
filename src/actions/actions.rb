@@ -1,3 +1,5 @@
+require_relative '../model/state'
+
 module Actions
     def self.move_snake(state)
         # TODO: Validate next position
@@ -9,16 +11,38 @@ module Actions
         end
     end
 
+    def self.change_direction(state, direction)
+        if next_direction_is_invalid?(direction, state)
+            return
+        end
+        state.direction = direction
+    end
+
+    private
+    def self.next_direction_is_invalid?(direction, state)
+        case direction
+        when Model::Direction::UP, Model::Direction::DOWN
+            if state.direction in [Model::Direction::UP, Model::Direction::DOWN]
+                return true
+            end
+        when Model::Direction::LEFT, Model::Direction::RIGHT
+            if state.direction in [Model::Direction::LEFT, Model::Direction::RIGHT]
+                return true
+            end
+        end
+        return false
+    end
+
     private
     def self.cal_next_position(direction, snake)
         case direction
-        when :up
-            return Model::Coord.new(snake.head.x, snake.head.y,  - 1)
-        when :down
+        when Model::Direction::UP
+            return Model::Coord.new(snake.head.x, snake.head.y - 1)
+        when Model::Direction::DOWN
             return Model::Coord.new(snake.head.x, snake.head.y + 1)
-        when :left
+        when Model::Direction::LEFT
             return Model::Coord.new(snake.head.x - 1, snake.head.y)
-        when :right
+        when Model::Direction::RIGHT
             return Model::Coord.new(snake.head.x + 1, snake.head.y)
         end
     end

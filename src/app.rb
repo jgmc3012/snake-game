@@ -8,7 +8,7 @@ class App
     end
     
     def start
-        view = View::Ruby2dView.new
+        view = View::Ruby2dView.new(self)
         Thread.new { init_timer(view) }
         view.create_window(@state)
     end
@@ -24,6 +24,12 @@ class App
             end
         end
     end
+
+    def send_action(action, params)
+        # Actions.change_direction(:down)
+        Actions.send(action, @state, params)
+    end
+
 end
 
 app = App.new
