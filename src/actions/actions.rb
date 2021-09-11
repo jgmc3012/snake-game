@@ -4,11 +4,30 @@ module Actions
     def self.move_snake(state)
         # TODO: Validate next position
         next_position = cal_next_position(state.direction, state.snake)
-        if position_is_valid?(state, next_position)
+        
+        if position_is_food?(state, next_position)
+            grow_snake(state, next_position)
+            state.food = generate_food(state)
+        elsif position_is_valid?(state, next_position)
             move_snake_to(next_position, state)
         else
             end_game(state)
         end
+    end
+
+    private
+    def self.grow_snake(state, next_position)
+        state.snake.body.unshift(next_position)
+    end
+
+    private
+    def self.position_is_food?(state, next_position)
+        return next_position.x == state.food.x && next_position.y == state.food.y
+    end
+
+    private
+    def self.generate_food(state)
+        return Model::Coord.new(rand(0..(state.board.width - 1)), rand(0..(state.board.height - 1)))
     end
 
     def self.change_direction(state, direction)
