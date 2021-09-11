@@ -24,8 +24,8 @@ module Actions
     end
 
     def self.position_is_valid?(state, next_position)
-        return false if next_position.y < 0 || next_position.y > state.board.height
-        return false if next_position.x < 0 || next_position.x > state.board.width
+        return false if next_position.y < 0 || next_position.y > state.board.height - 1
+        return false if next_position.x < 0 || next_position.x > state.board.width - 1
         return false if state.snake.body.include?(next_position)
         return true
     end
